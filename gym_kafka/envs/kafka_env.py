@@ -3,7 +3,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 
 
-class KakfaEnv(gym.Env):
+class KafkaEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
