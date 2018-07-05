@@ -1,3 +1,4 @@
+import pprint
 import gym
 from gym.utils import seeding
 
@@ -57,8 +58,7 @@ class KafkaEnv(gym.Env):
         # TODO return obs
 
     def render(self, mode='human', close=False):
-        # TODO think about best way to render the observation (e.g. print message?)
-        ...
+        pprint.pprint(self.last_obs)
 
     def close(self):
         self.messaging_api.close()
