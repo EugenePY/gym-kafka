@@ -7,6 +7,24 @@
       "foo"
     ]
   },
+  "parser": {
+    "type": "simple",
+    "name": "RL Gym"
+  },
+  "action_space": {
+    "type": "box",
+    "shape": [
+      3,
+      4
+    ]
+  },
+  "observation_space": {
+    "type": "box",
+    "shape": [
+      3,
+      4
+    ]
+  },
   "message_schemas": {
     "reset_outgoing": "kafka_schemas/api_env_request.json",
     "acknowledgement_incoming": "kafka_schemas/api_common_acknowledgment.json",

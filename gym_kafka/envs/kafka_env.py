@@ -1,4 +1,5 @@
 import pprint
+
 import gym
 from gym.utils import seeding
 
@@ -13,9 +14,8 @@ class KafkaEnv(gym.Env):
         self.messaging_api = factory.make_messaging_api()
         self.msg_parser = factory.make_message_parser()
 
-        # TODO initialize action and observation space
-        self.action_space = None
-        self.observation_space = None
+        self.action_space = factory.make_action_space()
+        self.observation_space = factory.make_observation_space()
 
         self.last_obs = None
         self.seed()

@@ -1,5 +1,12 @@
 import json
+
+from gym import spaces
+
 from . import KafkaAPI, MSGParser, MSGStore
+
+PARSERS = {'simple': MSGParser}
+
+SPACES = {'box': spaces.Box}
 
 
 class GymFactory(object):
@@ -18,4 +25,19 @@ class GymFactory(object):
         return api
 
     def make_message_parser(self):
-        return MSGParser(name='RL Gym', message_properties=self.config['message_properties'])
+        name = self.config['parser']['name']
+        props = self.config['message_properties']
+        return PARSERS[self.config['type']](name=name, message_properties=props)
+
+    def make_action_space(self):
+        space_config = self.config['action_space']
+        return self._make_space(space_config)
+
+    def make_observation_space(self):
+        space_config = self.config['observation_space']
+        return self._make_space(space_config)
+
+    @staticmethod
+    def _make_space(config):
+        space_type = config.pop('type')
+        return SPACES[space_type](**config)
