@@ -1,4 +1,12 @@
 {
+  "pup_sub_properties": {
+    "bootstrap_servers": [
+      "localhost:9092"
+    ],
+    "subscription_topics": [
+      "foo"
+    ]
+  },
   "message_schemas": {
     "reset_outgoing": "kafka_schemas/foo.json",
     "acknowledgement_incoming": "kafka_schemas/api_common_acknowledgment.json",
@@ -10,36 +18,36 @@
   },
   "message_properties": {
     "reset_outgoing": {
+      "topic": "foo",
       "header": {
-        "to": "foo",
-        "topic": "foo"
+        "to": "foo"
       },
       "body": {
         "_type": "reset"
       }
     },
     "action_outgoing": {
+      "topic": "foo",
       "header": {
-        "to": "foo",
-        "topic": "foo"
+        "to": "foo"
       },
       "body": {
         "_type": "action"
       }
     },
     "observation_outgoing": {
+      "topic": "foo",
       "header": {
-        "to": "foo",
-        "topic": "foo"
+        "to": "foo"
       },
       "body": {
         "_type": "request_observation"
       }
     },
     "reward_outgoing": {
+      "topic": "foo",
       "header": {
-        "to": "foo",
-        "topic": "foo"
+        "to": "foo"
       },
       "body": {
         "_type": "request_reward"
