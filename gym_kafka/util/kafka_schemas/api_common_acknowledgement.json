@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "spMessage",
+  "description": "api.common.Acknowledgement message",
+  "type": "object",
+  "required": [
+    "header",
+    "body"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "header": {
+      "description": "The message header.",
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "reqID"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "The sender of the message."
+        },
+        "to": {
+          "type": "string",
+          "description": "The recipient of the message."
+        },
+        "reqID": {
+          "type": "string",
+          "description": "Request ID"
+        }
+      }
+    },
+    "body": {
+      "description": "The message body.",
+      "type": "object",
+      "required": [
+        "_type",
+        "reqID"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "_type": {
+          "description": "The message type.",
+          "type": "string",
+          "enum": [
+            "api.common.Acknowledgement"
+          ]
+        },
+        "reqID": {
+          "description": "The request ID of the acknowledged message.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

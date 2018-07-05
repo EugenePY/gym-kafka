@@ -1,6 +1,7 @@
 import gym
-from gym import error, spaces, utils, logger
 from gym.utils import seeding
+
+from gym_kafka.util import GymFactory
 
 
 class KafkaEnv(gym.Env):
@@ -9,10 +10,11 @@ class KafkaEnv(gym.Env):
     def __init__(self):
         # TODO read Kafka config from file
         # TODO initialize action and observation space
-        # TODO initialize Kafka communications
+        self.messaging_api = GymFactory.make_messaging_api('gym_kafka/config.json')
         self.action_space = None
         self.observation_space = None
 
+        self.time = 0
         self.seed()
         self.reset()
 
@@ -30,8 +32,9 @@ class KafkaEnv(gym.Env):
         ...
 
     def reset(self):
-        # TODO send reset command and wait for acknowledgement
-        ...
+        # TODO send reset command and wait for acknowledgement and state
+        self.time = 0
+        # TODO return obs
 
     def render(self, mode='human', close=False):
         # TODO think about best way to render the observation (e.g. print message?)

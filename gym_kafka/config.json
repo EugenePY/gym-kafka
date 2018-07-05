@@ -1,0 +1,49 @@
+{
+  "message_schemas": {
+    "reset_outgoing": "kafka_schemas/foo.json",
+    "acknowledgement_incoming": "kafka_schemas/api_common_acknowledgment.json",
+    "action_outgoing": "kafka_schemas/foo.json",
+    "observation_outgoing": "kafka_schemas/foo.json",
+    "observation_incoming": "kafka_schemas/foo.json",
+    "reward_outgoing": "kafka_schemas/foo.json",
+    "reward_incoming": "kafka_schemas/foo.json"
+  },
+  "message_properties": {
+    "reset_outgoing": {
+      "header": {
+        "to": "foo",
+        "topic": "foo"
+      },
+      "body": {
+        "_type": "reset"
+      }
+    },
+    "action_outgoing": {
+      "header": {
+        "to": "foo",
+        "topic": "foo"
+      },
+      "body": {
+        "_type": "action"
+      }
+    },
+    "observation_outgoing": {
+      "header": {
+        "to": "foo",
+        "topic": "foo"
+      },
+      "body": {
+        "_type": "request_observation"
+      }
+    },
+    "reward_outgoing": {
+      "header": {
+        "to": "foo",
+        "topic": "foo"
+      },
+      "body": {
+        "_type": "request_reward"
+      }
+    }
+  }
+}
