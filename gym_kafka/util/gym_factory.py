@@ -1,5 +1,5 @@
 import json
-from . import KafkaAPI, MSGAssembler
+from . import KafkaAPI, MSGAssembler, MSGStore
 
 
 class GymFactory(object):
@@ -12,7 +12,7 @@ class GymFactory(object):
         for schema, schema_file in self.config['message_schemas'].items():
             schemas[schema] = json.load(schema_file)
 
-        api = KafkaAPI(schemas=schemas)
+        api = KafkaAPI(schemas=schemas, message_store=MSGStore())
         api.init_messaging_api(subscribe_to=self.config['pup_sub_properties']['subscription_topics'],
                                bootstrap_servers=self.config['pup_sub_properties']['bootstrap_servers'])
         return api
