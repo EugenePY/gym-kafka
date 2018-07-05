@@ -8,13 +8,13 @@
     ]
   },
   "message_schemas": {
-    "reset_outgoing": "kafka_schemas/foo.json",
+    "reset_outgoing": "kafka_schemas/api_env_request.json",
     "acknowledgement_incoming": "kafka_schemas/api_common_acknowledgment.json",
-    "action_outgoing": "kafka_schemas/foo.json",
-    "observation_outgoing": "kafka_schemas/foo.json",
-    "observation_incoming": "kafka_schemas/foo.json",
-    "reward_outgoing": "kafka_schemas/foo.json",
-    "reward_incoming": "kafka_schemas/foo.json"
+    "action_outgoing": "kafka_schemas/api_env_request.json",
+    "observation_outgoing": "kafka_schemas/api_env_request.json",
+    "observation_incoming": "kafka_schemas/api_env_response.json",
+    "reward_outgoing": "kafka_schemas/api_env_request.json",
+    "reward_incoming": "kafka_schemas/api_env_response.json"
   },
   "message_properties": {
     "reset_outgoing": {
@@ -23,7 +23,8 @@
         "to": "foo"
       },
       "body": {
-        "_type": "reset"
+        "_type": "request_reset",
+        "request": "path/to/foo"
       }
     },
     "action_outgoing": {
@@ -32,7 +33,8 @@
         "to": "foo"
       },
       "body": {
-        "_type": "action"
+        "_type": "request_action",
+        "request": "foo"
       }
     },
     "observation_outgoing": {
@@ -41,7 +43,8 @@
         "to": "foo"
       },
       "body": {
-        "_type": "request_observation"
+        "_type": "request_observation",
+        "request": "observation"
       }
     },
     "reward_outgoing": {
@@ -50,7 +53,8 @@
         "to": "foo"
       },
       "body": {
-        "_type": "request_reward"
+        "_type": "request_reward",
+        "request": "reward"
       }
     }
   }

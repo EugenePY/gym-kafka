@@ -1,5 +1,5 @@
 import json
-from . import KafkaAPI, MSGAssembler, MSGStore
+from . import KafkaAPI, MSGParser, MSGStore
 
 
 class GymFactory(object):
@@ -17,5 +17,5 @@ class GymFactory(object):
                                bootstrap_servers=self.config['pup_sub_properties']['bootstrap_servers'])
         return api
 
-    def make_message_assembler(self):
-        return MSGAssembler(name='RL Gym', message_properties=self.config['message_properties'])
+    def make_message_parser(self):
+        return MSGParser(name='RL Gym', message_properties=self.config['message_properties'])

@@ -1,5 +1,4 @@
 import json
-import uuid
 
 import jsonschema
 from kafka import KafkaConsumer, KafkaProducer
@@ -30,7 +29,7 @@ class KafkaAPI(object):
             self.has_subscribed = True
 
     def send_msg(self, topic, msg):
-        schema = self._infer_outgoing_msg_schema(msg)
+        schema = self._infer_msg_schema(msg)
         jsonschema.validate(msg, schema)
         self._assert_initialization()
         self._kafka_producer.send(topic=topic, value=msg)
@@ -47,7 +46,9 @@ class KafkaAPI(object):
                                      "configured time out period of {} ms".format(req_id, timeout_ms)
 
             msgs = self._unpack_msgs(msgs)
+            self._validate_msgs(msgs)
             self.msg_store.put_all(msgs)
+
         return self.msg_store.get(req_id)
 
     def close(self):
@@ -63,7 +64,12 @@ class KafkaAPI(object):
     def _unpack_msgs(msgs):
         return [r.value for records in msgs.values() for r in records]
 
-    def _infer_outgoing_msg_schema(self, msg):
+    def _validate_msgs(self, msgs):
+        for msg in msgs:
+            schema = self._infer_msg_schema(msg)
+            jsonschema.validate(msg, schema)
+
+    def _infer_msg_schema(self, msg):
         msg_type = msg['body']['_type']
         schema_key = '{}_outgoing'.format(msg_type)
         if schema_key in self.schemas:
@@ -81,29 +87,29 @@ class KafkaAPI(object):
                                   "'init_messaging_api()'.")
 
 
-class MSGAssembler(object):
+class MSGParser(object):
     def __init__(self, name, message_properties):
         self.name = name
         self.msg_props = message_properties
 
     def assemble_action_msg(self, action):
-        return self._assemble_msg('action_outgoing', {'action': action})
+        return self._assemble_msg('action_outgoing', {'request': action})
 
     def assemble_reset_msg(self):
-        return self._assemble_msg('reset_outgoing', {'request': 'reset'})
+        return self._assemble_msg('reset_outgoing', {})
 
     def assemble_observation_msg(self):
-        return self._assemble_msg('observation_outgoing', {'request': 'observation'})
+        return self._assemble_msg('observation_outgoing', {})
 
     def assemble_reward_msg(self):
-        return self._assemble_msg('reward_outgoing', {'request': 'reward'})
+        return self._assemble_msg('reward_outgoing', {})
 
     def _assemble_msg(self, type, msg_payload):
         msg = self.msg_props[type].copy()
         msg = self._parse_in_header_info(msg)
         msg['body'].update(msg_payload)
         topic = msg.pop('topic')
-        return topic, msg
+        return topic, msg['header']['reqID'], msg
 
     def _parse_in_header_info(self, msg):
         msg['header']['from'] = self.name
@@ -122,9 +128,9 @@ class MSGStore(object):
     def put_all(self, msgs):
         for msg in msgs:
             msg = self._extract_body(msg)
-            assert msg['regID'] not in self._msgs, "Reply to message with reqID {}" \
+            assert msg['resID'] not in self._msgs, "Reply to message with resID {}" \
                                                    " already exists in the message store".format(msg['reqID'])
-            self._msgs[msg['regID']] = msg
+            self._msgs[msg['resID']] = msg
 
     def get(self, req_id):
         return self._msgs.pop(req_id)

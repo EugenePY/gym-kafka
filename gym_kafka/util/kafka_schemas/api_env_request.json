@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Gym Kafka Message",
-  "description": "api.common.Acknowledgement message",
+  "description": "api.env.request message",
   "type": "object",
   "required": [
     "header",
@@ -37,7 +37,7 @@
       "type": "object",
       "required": [
         "_type",
-        "reqID"
+        "request"
       ],
       "additionalProperties": false,
       "properties": {
@@ -45,11 +45,14 @@
           "description": "The message type.",
           "type": "string",
           "enum": [
-            "api.common.Acknowledgement"
+            "request_reset",
+            "request_action",
+            "request_observation",
+            "request_reward"
           ]
         },
-        "reqID": {
-          "description": "The request ID of the acknowledged message.",
+        "request": {
+          "description": "Particulars of request.",
           "type": "string"
         }
       }
